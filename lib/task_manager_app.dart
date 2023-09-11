@@ -15,7 +15,7 @@ class TaskManager extends StatelessWidget {
       title: 'Task Manager',
       theme: mainTheme,
       routes: routes,
-      initialRoute: LoginPage.doLogin ? '/start' : '/login',
+      initialRoute: LoginPage.isLogin ? '/start' : '/login',
     );
   }
 }

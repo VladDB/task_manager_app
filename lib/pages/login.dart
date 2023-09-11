@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../services/auth_server.dart';
+
 class LoginPage extends StatefulWidget {
-  static var doLogin = false;
+  static var isLogin = true;
 
   const LoginPage({super.key});
 
@@ -11,9 +13,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _sizeText = const TextStyle(fontSize: 20.0, color: Colors.black);
-  var _adress;
+  var _host = '10.0.2.2';
   var _port;
-  var _name;
+  var _login;
   var _pass;
 
   @override
@@ -33,8 +35,8 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(labelText: 'host'),
                 keyboardType: TextInputType.url,
                 style: _sizeText,
-                onSaved: (val) {
-                  _adress = val;
+                onChanged: (val) {
+                  _host = val;
                   setState(() {});
                 },
               ),
@@ -45,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(labelText: 'port'),
                 keyboardType: TextInputType.number,
                 style: _sizeText,
-                onSaved: (val) {
+                onChanged: (val) {
                   _port = val;
                   setState(() {});
                 },
@@ -57,8 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: const InputDecoration(labelText: 'username'),
                 keyboardType: TextInputType.name,
                 style: _sizeText,
-                onSaved: (val) {
-                  _name = val;
+                onChanged: (val) {
+                  _login = val;
                   setState(() {});
                 },
               ),
@@ -70,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
                 style: _sizeText,
-                onSaved: (val) {
+                onChanged: (val) {
                   _pass = val;
                   setState(() {});
                 },
@@ -79,16 +81,35 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(top: 25),
               child: MaterialButton(
-                color: Colors.indigo.shade500,
+                color: Colors.amber.shade500,
                 height: 50,
                 minWidth: 150,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/start');
+                onPressed: () async {
+                  var auth = Auth(_login, _pass, _host, _port);
+                  await auth.doLogin();
+                  if (context.mounted) {
+                    await showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                          title: Text(
+                        LoginPage.isLogin
+                            ? 'Успешная авторизация'
+                            : 'Проверьте логин/пароль\n и соединение с сервером',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                      )),
+                    );
+                  }
+                  if (context.mounted && LoginPage.isLogin) {
+                    Navigator.pushReplacementNamed(context, '/start');
+                  }
                 },
-                splashColor: Colors.red,
+                splashColor: Colors.amber.shade800,
                 child: const Text(
                   'Войти',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
               ),
             )
