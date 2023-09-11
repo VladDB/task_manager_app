@@ -38,12 +38,12 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black26,
         elevation: 0,
-        selectedItemColor: Colors.amber.shade500,
+        selectedItemColor: Colors.amber.shade400,
         unselectedItemColor: Colors.black,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.task),
-            label: 'Works',
+            label: 'Tasks',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.create_sharp),

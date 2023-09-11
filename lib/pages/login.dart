@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/auth_server.dart';
 
 class LoginPage extends StatefulWidget {
-  static var isLogin = true;
+  static var isLogin = false;
 
   const LoginPage({super.key});
 
@@ -23,12 +23,16 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Авторизация'),
+        title: const Text('Log in'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(
+              Icons.account_circle,
+              size: 50,
+            ),
             SizedBox(
               width: 300,
               child: TextFormField(

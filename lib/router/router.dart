@@ -1,9 +1,11 @@
 import 'package:task_manager/pages/login.dart';
 import 'package:task_manager/pages/home_page.dart';
 
+import '../components/hidden_drawer.dart';
+
 final routes = {
   '/login': (context) => const LoginPage(),
-  '/start': (context) => const HomePage()
+  '/start': (context) => const HiddenDrawer()
 };
 
 const _mainUrl = '/entek/api/ed/';
