@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/components/bottom_nav_bar.dart';
-import 'package:task_manager/components/hidden_drawer.dart';
+import 'package:task_manager/components/custom_drawer.dart';
 import 'package:task_manager/pages/create_work_page.dart';
 import 'package:task_manager/pages/works_page.dart';
 
@@ -33,13 +33,28 @@ class _HomePageState extends State<HomePage> {
     CreateWorkPage(),
   ];
 
-  final List<String> _titles = ['Tasks', 'Creating', 'Users', 'Chat'];
+  final _titles = [
+    'Tasks',
+    'Create',
+    'Users',
+    'Chat'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: Text(_titles[_selectedId])),
-      //drawer: const HiddenDrawer(),
+      appBar: AppBar(
+          title: Text(_titles[_selectedId]),
+        actions: [
+          IconButton(
+            iconSize: 32,
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () {},
+          ),
+        ],
+        centerTitle: true,
+      ),
+      drawer: MyDrawer(),
       bottomNavigationBar: MyBottomNavBar(
         onTabChange: (index) => navigateBottomBar(index),
       ),

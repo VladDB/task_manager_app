@@ -1,24 +1,25 @@
 import 'package:dio/dio.dart';
+import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:task_manager/pages/login.dart';
 import 'package:task_manager/router/router.dart';
 
+import '../model/user_session.dart';
+
 class Auth {
-  var _server = '10.0.2.2';
-  var _port = '8849';
-  var _login;
-  var _pass;
+  UserSession? _session;
   var _token;
+  final box = GetStorage();
 
-  Auth(this._login, this._pass, this._server, this._port);
-
-  Future<int?> doLogin() async {
-    var basic = 'Basic ${base64Encode(utf8.encode('$_login:$_pass'))}';
-    var statusCode;
+  Future<String?> doLogin() async {
+    _session = box.read('session');
+    if (_session == null)
+      return 'Нет данных для входа';
+    var basic = 'Basic ${base64Encode(utf8.encode('${_session?.username}:${_session?.password}'))}';
+    var status;
     try {
-      final response = await Dio().get('http://$_server:$_port${urls['login']}',
+      final response = await Dio().get('${_session?.host}:${_session?.port}${urls['login']}',
           options: Options(
             headers: {'Authorization': basic},
           ));
@@ -27,13 +28,17 @@ class Auth {
         _token = data['token'];
         if (_token != null) {
           LoginPage.isLogin = true;
-          statusCode = response.statusCode;
+          status = 'Успешная авторизация';
+          _session?.token = _token;
+          box.write('session', _session);
+        } else {
+          status = 'Неправильный логин/пароль';
         }
       }
     } on DioException catch (e) {
       LoginPage.isLogin = false;
-      statusCode = e.response?.statusCode;
+      status = 'Ошибка авторизации. Проверьте соединение с сервером';
     }
-    return statusCode;
+    return status;
   }
 }

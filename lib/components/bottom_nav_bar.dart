@@ -10,7 +10,7 @@ class MyBottomNavBar extends StatefulWidget {
 }
 
 class _MyBottomNavBarState extends State<MyBottomNavBar> {
-  int _currentIndex = 0;
+  var _currentIndex = 0;
 
   void setCurrentIndex(index) {
     setState(() {
@@ -38,7 +38,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black26,
         elevation: 0,
-        selectedItemColor: Colors.amber.shade400,
+        selectedItemColor: Colors.blue.shade400,
         unselectedItemColor: Colors.black,
         items: const [
           BottomNavigationBarItem(
